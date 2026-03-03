@@ -347,6 +347,10 @@ PrefabInstance:
       propertyPath: sceneToLoad
       value: Assets/Scenes/ChunkLoad.unity
       objectReference: {fileID: 0}
+    - target: {fileID: 1734474280139388483, guid: 46e479a182b5d0f4cbda3f224e71c116, type: 3}
+      propertyPath: _sceneToLoad
+      value: Assets/Scenes/ChunkLoad.unity
+      objectReference: {fileID: 0}
     - target: {fileID: 2526778188829498193, guid: 46e479a182b5d0f4cbda3f224e71c116, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -455,6 +459,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1734474280139388483, guid: 46e479a182b5d0f4cbda3f224e71c116, type: 3}
       propertyPath: sceneToLoad
+      value: Assets/Scenes/ChunkSplit.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 1734474280139388483, guid: 46e479a182b5d0f4cbda3f224e71c116, type: 3}
+      propertyPath: _sceneToLoad
       value: Assets/Scenes/ChunkSplit.unity
       objectReference: {fileID: 0}
     - target: {fileID: 2526778188829498193, guid: 46e479a182b5d0f4cbda3f224e71c116, type: 3}
@@ -797,6 +805,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1734474280139388483, guid: 46e479a182b5d0f4cbda3f224e71c116, type: 3}
       propertyPath: sceneToLoad
+      value: Assets/Scenes/ChunkEditing.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 1734474280139388483, guid: 46e479a182b5d0f4cbda3f224e71c116, type: 3}
+      propertyPath: _sceneToLoad
       value: Assets/Scenes/ChunkEditing.unity
       objectReference: {fileID: 0}
     - target: {fileID: 2526778188829498193, guid: 46e479a182b5d0f4cbda3f224e71c116, type: 3}
