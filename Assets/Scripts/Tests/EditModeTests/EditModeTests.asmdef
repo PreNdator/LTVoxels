@@ -6,7 +6,8 @@
         "UnityEditor.TestRunner",
         "Project.Core",
         "Unity.Mathematics",
-        "UniTask"
+        "UniTask",
+        "Unity.Collections"
     ],
     "includePlatforms": [
         "Editor"
