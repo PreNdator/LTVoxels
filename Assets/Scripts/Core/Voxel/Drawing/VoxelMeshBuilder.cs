@@ -1,4 +1,5 @@
-﻿using Unity.Collections;
+﻿using System;
+using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
@@ -15,6 +16,22 @@ namespace LedenevTV.Voxel.Drawing
         private int _materialLimit;
 
         private IChunkSpace _vertexPostProcessor;
+
+
+        private readonly VertexAttributeDescriptor[] _vertexAttributesWithoutColors =
+        {
+            new VertexAttributeDescriptor(VertexAttribute.Position, VertexAttributeFormat.Float32, dimension: 3, stream: 0),
+            new VertexAttributeDescriptor(VertexAttribute.Normal, VertexAttributeFormat.Float32, dimension: 3, stream: 1),
+            new VertexAttributeDescriptor(VertexAttribute.TexCoord0, VertexAttributeFormat.Float32, dimension: 2, stream: 2)
+        };
+
+        private readonly VertexAttributeDescriptor[] _vertexAttributesWithColors =
+        {
+            new VertexAttributeDescriptor(VertexAttribute.Position, VertexAttributeFormat.Float32, dimension: 3, stream: 0),
+            new VertexAttributeDescriptor(VertexAttribute.Normal, VertexAttributeFormat.Float32, dimension: 3, stream: 1),
+            new VertexAttributeDescriptor(VertexAttribute.TexCoord0, VertexAttributeFormat.Float32, dimension: 2, stream: 2),
+            new VertexAttributeDescriptor(VertexAttribute.Color, VertexAttributeFormat.UNorm8, dimension: 4, stream: 3)
+        };
 
         public VoxelMeshBuilder(VoxelMeshSettings buildSettings, IChunkSpace vertexPostProcessor)
         {
@@ -146,39 +163,7 @@ namespace LedenevTV.Voxel.Drawing
         }
         internal VertexAttributeDescriptor[] BuildVertexAttributes(bool useColors)
         {
-            int attributeCount = useColors ? 4 : 3;
-            VertexAttributeDescriptor[] vertexAttributes = new VertexAttributeDescriptor[attributeCount];
-
-            vertexAttributes[0] = new VertexAttributeDescriptor(
-                VertexAttribute.Position,
-                VertexAttributeFormat.Float32,
-                3,
-                0
-            );
-
-            vertexAttributes[1] = new VertexAttributeDescriptor(
-                VertexAttribute.Normal,
-                VertexAttributeFormat.Float32,
-                3,
-                1
-            );
-
-            vertexAttributes[2] = new VertexAttributeDescriptor(
-                VertexAttribute.TexCoord0,
-                VertexAttributeFormat.Float32,
-                2,
-                2
-            );
-
-            if (useColors)
-            {
-                vertexAttributes[3] = new VertexAttributeDescriptor(
-                    VertexAttribute.Color,
-                    VertexAttributeFormat.UNorm8,
-                    4,
-                    3
-                );
-            }
+            VertexAttributeDescriptor[] vertexAttributes = useColors ? _vertexAttributesWithColors: _vertexAttributesWithoutColors;
 
             return vertexAttributes;
         }
