@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
@@ -197,14 +198,14 @@ namespace LedenevTV.Voxel
             DisposeNativeArrays();
         }
 
-        private void DisposeNativeArrays()
+        protected virtual void DisposeNativeArrays()
         {
             if (_voxelTypes.IsCreated) _voxelTypes.Dispose();
             if (_materialIds.IsCreated) _materialIds.Dispose();
             if (_colors.IsCreated) _colors.Dispose();
         }
 
-        private void Allocate(int3 size, bool useColors)
+        protected virtual void Allocate(int3 size, bool useColors)
         {
             _size = math.max(size, 1);
 
