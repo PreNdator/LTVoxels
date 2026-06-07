@@ -1,4 +1,5 @@
 ﻿using LedenevTV.Voxel;
+using LedenevTV.Voxel.Collisions;
 using LedenevTV.Voxel.Serialization;
 using UnityEngine;
 using Zenject;
@@ -28,7 +29,8 @@ namespace LedenevTV.Runtime.Examples
 
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
-        private MeshCollider _meshCollider;
+        [SerializeField]
+        private VoxelBoxColliderGroup _boxColliderGroup;
 
         private VoxelChunk _voxelClone;
 
@@ -51,7 +53,6 @@ namespace LedenevTV.Runtime.Examples
         protected virtual void Awake()
         {
             _meshFilter = GetComponent<MeshFilter>();
-            _meshCollider = GetComponent<MeshCollider>();
             _meshRenderer = GetComponent<MeshRenderer>();
         }
 
@@ -65,19 +66,24 @@ namespace LedenevTV.Runtime.Examples
             Mesh mesh = _chunkProvider.GetCachedChunkMesh(_byteSource);
 
             _meshFilter.sharedMesh = mesh;
-            if (_meshCollider != null) _meshCollider.sharedMesh = mesh;
+            if (_boxColliderGroup != null)
+            {
+                _boxColliderGroup.Rebuild(GetChunkVoxels());
+            }
         }
 
         protected virtual void OnEnable()
         {
             _meshRenderer.enabled = true;
-            if (_meshCollider != null) _meshCollider.enabled = true;
+            if (_boxColliderGroup != null)
+                _boxColliderGroup.SetCollidersEnabled(true);
         }
 
         protected virtual void OnDisable()
         {
             _meshRenderer.enabled = false;
-            if (_meshCollider != null) _meshCollider.enabled = false;
+            if (_boxColliderGroup != null)
+                _boxColliderGroup.SetCollidersEnabled(false);
         }
 
         protected virtual void OnDestroy()

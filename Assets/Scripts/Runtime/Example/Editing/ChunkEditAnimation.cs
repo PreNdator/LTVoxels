@@ -1,4 +1,5 @@
 using LedenevTV.Voxel;
+using LedenevTV.Voxel.Collisions;
 using LedenevTV.Voxel.Drawing;
 using System.Collections;
 using UnityEngine;
@@ -18,6 +19,8 @@ namespace LedenevTV.Runtime.Examples
         private Mesh _chunkMesh;
 
         private MeshFilter _meshFilter;
+        [SerializeField]
+        private VoxelBoxColliderGroup _boxColliderGroup;
 
         private IVoxelMeshBuilder _voxelMeshBuilder;
 
@@ -81,6 +84,8 @@ namespace LedenevTV.Runtime.Examples
         {
             RebuildChunk(_chunk);
             _voxelMeshBuilder.RebuildMesh(_chunkMesh, _chunk, drawFacesOnBounds: true);
+            if (_boxColliderGroup != null)
+                _boxColliderGroup.Rebuild(_chunk);
         }
 
         private IEnumerator AnimationCoroutine()
@@ -92,6 +97,8 @@ namespace LedenevTV.Runtime.Examples
                 yield return waitDelay;
                 NextStep(_chunk);
                 _voxelMeshBuilder.RebuildMesh(_chunkMesh, _chunk, drawFacesOnBounds: true);
+                if (_boxColliderGroup != null)
+                    _boxColliderGroup.Rebuild(_chunk);
             }
         }
     }

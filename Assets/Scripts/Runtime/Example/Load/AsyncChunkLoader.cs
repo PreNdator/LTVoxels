@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using LedenevTV.Voxel;
+using LedenevTV.Voxel.Collisions;
 using LedenevTV.Voxel.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,7 +32,9 @@ namespace LedenevTV.Runtime.Examples
 
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
-        private MeshCollider _meshCollider;
+
+        [SerializeField]
+        private VoxelBoxColliderGroup _boxColliderGroup;
 
         private Task<VoxelChunk> _getCloneTask;
 
@@ -54,7 +57,6 @@ namespace LedenevTV.Runtime.Examples
         protected virtual void Awake()
         {
             _meshFilter = GetComponent<MeshFilter>();
-            _meshCollider = GetComponent<MeshCollider>();
             _meshRenderer = GetComponent<MeshRenderer>();
         }
 
@@ -69,20 +71,38 @@ namespace LedenevTV.Runtime.Examples
             if (!ct.IsCancellationRequested)
             {
                 _meshFilter.sharedMesh = mesh;
-                if (_meshCollider != null) _meshCollider.sharedMesh = mesh;
+                if (_boxColliderGroup != null)
+                {
+
+                    VoxelChunk chunk;
+
+                    try
+                    {
+                        chunk = await GetChunkVoxels();
+                    }
+                    catch (System.OperationCanceledException)
+                    {
+                        return;
+                    }
+
+                    if (!ct.IsCancellationRequested)
+                        _boxColliderGroup.Rebuild(chunk);
+                }
             }
         }
 
         protected virtual void OnEnable()
         {
             _meshRenderer.enabled = true;
-            if (_meshCollider != null) _meshCollider.enabled = true;
+            if (_boxColliderGroup != null)
+                _boxColliderGroup.SetCollidersEnabled(true);
         }
 
         protected virtual void OnDisable()
         {
             _meshRenderer.enabled = false;
-            if (_meshCollider != null) _meshCollider.enabled = false;
+            if (_boxColliderGroup != null)
+                _boxColliderGroup.SetCollidersEnabled(false);
         }
 
         protected virtual void OnDestroy()

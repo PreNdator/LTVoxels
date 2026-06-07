@@ -1152,6 +1152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animationFramesDelay: 0.016666668
+  _boxColliderGroup: {fileID: 2011469001}
   _chunkSize: 64
   _radius: 5
   _stepMoveDistance: 1
@@ -1206,7 +1207,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1, z: 80}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2011469000}
   m_Father: {fileID: 1128316243}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1751827126
@@ -1255,6 +1257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialLimit: 2
   _chunkSpace: 0
+  _collideWithTransparentVoxels: 1
 --- !u!1 &1796306670
 GameObject:
   m_ObjectHideFlags: 0
@@ -1505,6 +1508,51 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4258963209958476303, guid: d4a1d076135a54c4b9786d5d86c9eed7, type: 3}
   m_PrefabInstance: {fileID: 1998896864}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2011468999
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2011469000}
+  - component: {fileID: 2011469001}
+  m_Layer: 0
+  m_Name: Colliders
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2011469000
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011468999}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1556176948}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2011469001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011468999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9eaef28ccbc4a5196dc6806e9b902ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _colliders: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

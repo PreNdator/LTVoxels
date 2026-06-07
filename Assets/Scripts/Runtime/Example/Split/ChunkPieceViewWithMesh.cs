@@ -1,4 +1,5 @@
 ﻿using LedenevTV.Voxel.Drawing;
+using LedenevTV.Voxel.Collisions;
 using LedenevTV.Voxel.Splitting;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,8 @@ namespace LedenevTV.Runtime.Examples
 
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
-        private MeshCollider _meshCollider;
+        [SerializeField]
+        private VoxelBoxColliderGroup _boxColliderGroup;
 
         [Inject]
         public void Construct(IVoxelMeshBuilder voxelMeshBuilder)
@@ -27,7 +29,6 @@ namespace LedenevTV.Runtime.Examples
         {
             _meshFilter = GetComponent<MeshFilter>();
             _meshRenderer = GetComponent<MeshRenderer>();
-            _meshCollider = GetComponent<MeshCollider>();
         }
 
         public override void CreateMesh(ChunkPiece piece, List<Material> sharedMaterials)
@@ -41,7 +42,10 @@ namespace LedenevTV.Runtime.Examples
             _voxelMeshBuilder.RebuildMesh(_associatedMesh, piece.Chunk, drawFacesOnBounds: true);
 
             _meshFilter.sharedMesh = _associatedMesh;
-            _meshCollider.sharedMesh = _associatedMesh;
+            if (_boxColliderGroup != null)
+            {
+                _boxColliderGroup.Rebuild(piece.Chunk);
+            }
         }
 
         protected override void Clear()
@@ -53,8 +57,8 @@ namespace LedenevTV.Runtime.Examples
                 if (_meshFilter != null && _meshFilter.sharedMesh == _associatedMesh)
                     _meshFilter.sharedMesh = null;
 
-                if (_meshCollider != null && _meshCollider.sharedMesh == _associatedMesh)
-                    _meshCollider.sharedMesh = null;
+                if (_boxColliderGroup != null)
+                    _boxColliderGroup.Clear();
 
                 Destroy(_associatedMesh);
                 _associatedMesh = null;

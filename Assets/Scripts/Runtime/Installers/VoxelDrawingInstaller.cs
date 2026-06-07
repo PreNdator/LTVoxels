@@ -1,3 +1,4 @@
+using LedenevTV.Voxel.Collisions;
 using LedenevTV.Voxel.Drawing;
 using UnityEngine;
 using Zenject;
@@ -15,10 +16,12 @@ namespace LedenevTV.Installers
         [SerializeField] private byte _materialLimit = 8;
 
         [SerializeField] private ChunkSpaceKind _chunkSpace = ChunkSpaceKind.Center;
+        [SerializeField] private bool _collideWithTransparentVoxels = true;
 
         public override void InstallBindings()
         {
             Container.Bind<VoxelMeshSettings>().AsSingle().WithArguments(_materialLimit);
+            Container.Bind<VoxelColliderSettings>().FromInstance(new VoxelColliderSettings(_collideWithTransparentVoxels)).AsSingle();
 
             switch (_chunkSpace)
             {
@@ -31,6 +34,7 @@ namespace LedenevTV.Installers
             }
 
             Container.Bind<IVoxelMeshBuilder>().To<VoxelMeshBuilder>().AsSingle();
+            Container.Bind<IVoxelBoxColliderBuilder>().To<GreedyVoxelBoxColliderBuilder>().AsSingle();
 
         }
     }

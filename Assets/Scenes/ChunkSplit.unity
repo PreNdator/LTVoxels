@@ -1488,6 +1488,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _materialLimit: 2
   _chunkSpace: 0
+  _collideWithTransparentVoxels: 1
 --- !u!1 &1796306670
 GameObject:
   m_ObjectHideFlags: 0
