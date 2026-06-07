@@ -3,13 +3,26 @@ using LedenevTV.Voxel.Serialization;
 using UnityEngine;
 using Zenject;
 
+#if UNITY_EDITOR
+using R3;
+#endif
+
 namespace LedenevTV.Runtime.Examples
 {
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
     public class ChunkLoader : MonoBehaviour
+#if UNITY_EDITOR
+        , IEditorVoxelPreviewSource
+#endif
     {
         [SerializeField]
         private VoxelBytesAsset _byteSource;
+
+#if UNITY_EDITOR
+        private ReactiveProperty<IBytesSource> _editorByteSource;
+
+        public ReadOnlyReactiveProperty<IBytesSource> EditorByteSource => EnsureEditorByteSource();
+#endif
 
         private IChunkProvider _chunkProvider;
 
@@ -73,6 +86,31 @@ namespace LedenevTV.Runtime.Examples
             {
                 _voxelClone.Dispose();
             }
+
+#if UNITY_EDITOR
+            if (_editorByteSource != null)
+            {
+                _editorByteSource.Dispose();
+                _editorByteSource = null;
+            }
+#endif
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            EnsureEditorByteSource().Value = _byteSource;
+        }
+
+        private ReactiveProperty<IBytesSource> EnsureEditorByteSource()
+        {
+            if (_editorByteSource == null)
+            {
+                _editorByteSource = new ReactiveProperty<IBytesSource>(_byteSource);
+            }
+
+            return _editorByteSource;
+        }
+#endif
     }
 }
