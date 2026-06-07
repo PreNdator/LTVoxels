@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace LedenevTV.Editor
 {
-    [ScriptedImporter(1, new[] { "vox", "ply" })]
+    [ScriptedImporter(1, new[] { "vox", "ply", "voxch" })]
     public sealed class VoxelBytesImporter : ScriptedImporter
     {
         public override void OnImportAsset(AssetImportContext ctx)
