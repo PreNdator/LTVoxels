@@ -6,13 +6,26 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
+#if UNITY_EDITOR
+using R3;
+#endif
+
 namespace LedenevTV.Runtime.Examples
 {
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
     public class AsyncChunkLoader : MonoBehaviour
+#if UNITY_EDITOR
+        , IEditorAsyncVoxelPreviewSource
+#endif
     {
         [SerializeField]
         private AsyncBytesSource _byteSource;
+
+#if UNITY_EDITOR
+        private ReactiveProperty<IAsyncBytesSource> _editorAsyncByteSource;
+
+        public ReadOnlyReactiveProperty<IAsyncBytesSource> EditorAsyncByteSource => EnsureEditorAsyncByteSource();
+#endif
 
         private IAsyncChunkProvider _chunkProvider;
 
@@ -80,5 +93,22 @@ namespace LedenevTV.Runtime.Examples
                 chunk.Dispose();
             }
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            EnsureEditorAsyncByteSource().Value = _byteSource;
+        }
+
+        private ReactiveProperty<IAsyncBytesSource> EnsureEditorAsyncByteSource()
+        {
+            if (_editorAsyncByteSource == null)
+            {
+                _editorAsyncByteSource = new ReactiveProperty<IAsyncBytesSource>(_byteSource);
+            }
+
+            return _editorAsyncByteSource;
+        }
+#endif
     }
 }

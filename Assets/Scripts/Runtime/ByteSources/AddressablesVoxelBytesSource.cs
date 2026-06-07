@@ -24,7 +24,8 @@ namespace LedenevTV.Voxel.Serialization
             if (!_assetReference.RuntimeKeyIsValid())
                 throw new InvalidOperationException($"Addressable runtime key is invalid. Reference: {_assetReference}");
 
-            AsyncOperationHandle<VoxelBytesAsset> handle = _assetReference.LoadAssetAsync();
+            AsyncOperationHandle<VoxelBytesAsset> handle =
+                Addressables.LoadAssetAsync<VoxelBytesAsset>(_assetReference.RuntimeKey);
 
             try
             {
@@ -37,7 +38,10 @@ namespace LedenevTV.Voxel.Serialization
             }
             finally
             {
-                Addressables.Release(handle);
+                if (handle.IsValid())
+                {
+                    Addressables.Release(handle);
+                }
             }
         }
     }
